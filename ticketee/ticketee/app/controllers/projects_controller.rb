@@ -1,10 +1,11 @@
 class ProjectsController < ApplicationController
+  before_filter :find_conference, :only => [:show, :edit, :update, :destroy]
+
   def index
     @projects = Project.all
   end
 
   def show
-    @project = Project.find(params[:id])
   end
 
   def new
@@ -22,7 +23,6 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = Project.find(params[:id])
     if @project.update_attributes(params[:project])
       flash[:notice] = "Project has been updated."
       redirect_to @project
@@ -31,14 +31,20 @@ class ProjectsController < ApplicationController
       render :action => "edit"
     end
   end
-  
-  def edit    
-    @project = Project.find(params[:id])
+
+  def edit
   end
 
   def destroy
-    @project = Project.find(params[:id])
-    @project.destroy    
+    @project.destroy
     redirect_to @project, :notice => "Project has been deleted."
+  end
+
+  protected
+  def find_conference
+    @project = Project.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "The project you were looking for could not be found."
+    redirect_to projects_path
   end
 end
