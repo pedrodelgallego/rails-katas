@@ -1,12 +1,8 @@
 require 'spec_helper'
 
 describe ProjectsController do
-  let(:project) { Factory(:project) }
-  let(:user) do
-    user = Factory(:user)
-    user.confirm!
-    user
-  end
+  let(:project) { Factory(:project) }  
+  let(:user)    { create_user! }
 
   context "standard users" do
     { "new" => "get",
