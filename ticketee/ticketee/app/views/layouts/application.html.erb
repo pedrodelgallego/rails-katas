@@ -19,6 +19,9 @@
     </div>
   <% end %>
   <nav>
+    <%= admins_only do %>
+      <%= link_to "Admin", admin_root_path %><br>
+    <% end %>
     <% if user_signed_in? %>
       Signed in as <%= current_user.email %>
     <% else %>
